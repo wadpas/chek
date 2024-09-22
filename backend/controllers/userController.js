@@ -119,7 +119,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
  */
 const getUsers = asyncHandler(async (req, res) => {
 	const users = await User.find({})
-	res.json(users)
+	res.status(200).json(users)
 })
 
 /**
@@ -130,7 +130,11 @@ const getUsers = asyncHandler(async (req, res) => {
 const deleteUser = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.params.id)
 	if (user) {
-		await user.remove()
+		if (user.isAdmin) {
+			res.status(400)
+			throw new Error('Cannot delete admin user')
+		}
+		await User.deleteOne({ _id: user._id })
 		res.json({ message: 'User removed' })
 	} else {
 		res.status(404)

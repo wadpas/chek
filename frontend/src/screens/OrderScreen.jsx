@@ -197,9 +197,7 @@ const OrderScreen = () => {
 									)}
 								</ListGroup.Item>
 							)}
-
 							{loadingDeliver && <Loader />}
-
 							{userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
 								<ListGroup.Item>
 									<Button
